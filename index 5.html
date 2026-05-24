@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Operations Studio — Workflow Strategy & AI Systems</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#f9f6f1; --cream:#f2ede4; --white:#ffffff; --black:#141210;
+  --gold:#9a7040; --gold2:#c49a5a; --gold3:#e8c87a;
+  --muted:#8a7d6a; --sub:#4a3f30; --text:#1a1510;
+  --border:#e0d6c8; --border2:#c8bfad;
+  --forest:#2d5a3d; --blue:#2a3d5a; --plum:#5a2d4a; --teal:#2d5a4a; --warm:#5a3d1a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;min-height:100vh}
+
+/* ── HEADER ── */
+.header{background:var(--black);padding:28px 28px 24px;border-bottom:2px solid var(--gold)}
+.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.header-left .eyebrow{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold2);font-weight:600;margin-bottom:8px}
+.header-left h1{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,38px);font-weight:300;color:#f5f0e8;line-height:1.1}
+.header-left h1 em{font-style:italic;color:var(--gold3)}
+.header-right{text-align:right}
+.header-right .tagline{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--gold2);margin-bottom:4px}
+.header-right .sub{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#6a5f50}
+
+/* ── LAYOUT ── */
+.layout{display:flex;align-items:flex-start}
+.main-wrap{flex:1;min-width:0}
+
+/* ── SIDEBAR ── */
+.sidebar{width:260px;flex-shrink:0;background:var(--black);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;border-right:2px solid var(--gold)}
+.sidebar-brand{padding:28px 24px 22px;border-bottom:1px solid rgba(154,112,64,0.25)}
+.sidebar-brand .eyebrow{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold2);font-weight:600;margin-bottom:8px}
+.sidebar-brand h1{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:#f5f0e8;line-height:1.15}
+.sidebar-brand h1 em{font-style:italic;color:var(--gold3)}
+.sidebar-brand .tagline{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--gold2);margin-top:6px}
+
+/* ── NAV ── */
+.nav-bar{flex:1;display:flex;flex-direction:column;padding:12px 0}
+.nav-btn{width:100%;background:none;border:none;border-left:2px solid transparent;color:rgba(250,247,242,0.4);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:11px 24px;transition:all .2s;text-align:left}
+.nav-btn:hover{color:rgba(250,247,242,0.8);background:rgba(154,112,64,0.08)}
+.nav-btn.active{color:#f5f0e8;border-left-color:var(--gold);background:rgba(154,112,64,0.12)}
+.nav-cta{margin:auto 20px 24px;background:var(--gold);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:12px 16px;border-radius:2px;transition:background .2s}
+.nav-cta:hover{background:var(--sub)}
+
+/* ── PAGES ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── HERO ── */
+.hero{background:var(--black);padding:72px 28px 64px;border-bottom:1px solid #2a2520}
+.hero-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:center}
+.hero-eyebrow{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold2);font-weight:600;margin-bottom:16px}
+.hero h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,58px);font-weight:300;color:#f5f0e8;line-height:1.05;margin-bottom:20px}
+.hero h2 em{font-style:italic;color:var(--gold3)}
+.hero-sub{font-size:15px;color:#a09080;line-height:1.8;margin-bottom:32px;max-width:520px;font-weight:300}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:14px 28px;border-radius:2px;transition:background .2s}
+.btn-primary:hover{background:#7a5830}
+.btn-ghost{background:transparent;color:#a09080;border:1px solid #3a3028;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:14px 28px;border-radius:2px;transition:all .2s}
+.btn-ghost:hover{border-color:var(--gold2);color:var(--gold2)}
+.hero-card{background:#1a1510;border:1px solid #2a2520;border-top:3px solid var(--gold);border-radius:4px;padding:28px}
+.hero-card .hc-label{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px}
+.hero-card .hc-stat{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #2a2520}
+.hero-card .hc-stat:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.hero-card .hc-num{font-family:'DM Mono',monospace;font-size:22px;color:var(--gold3);font-weight:500}
+.hero-card .hc-desc{font-size:12px;color:#6a5f50;line-height:1.5}
+
+/* ── TRUST BAR ── */
+.trust-bar{background:var(--cream);border-bottom:1px solid var(--border);padding:16px 28px}
+.trust-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.04em}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:var(--gold2)}
+
+/* ── SECTION WRAP ── */
+.section{padding:60px 28px}
+.section-inner{max-width:1240px;margin:0 auto}
+.section.bg-cream{background:var(--cream)}
+.section.bg-dark{background:var(--black)}
+.section.bg-white{background:var(--white)}
+
+/* ── PAGE / SECTION HEADERS ── */
+.pg-head{margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.pg-num{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+.pg-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,44px);font-weight:400;color:var(--text);line-height:1.1;margin-bottom:6px}
+.pg-head h2 em{font-style:italic;color:var(--gold)}
+.pg-head p{font-size:13px;color:var(--muted);max-width:640px;line-height:1.8}
+.pg-head.dark{border-bottom-color:#2a2520}
+.pg-head.dark .pg-num{color:var(--gold2)}
+.pg-head.dark h2{color:#f5f0e8}
+.pg-head.dark p{color:#6a5f50}
+
+/* ── GRIDS ── */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.grid-mx{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.col-span-2{grid-column:1/-1}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:22px}
+.card.accent-gold{border-top:3px solid var(--gold)}
+.card.accent-forest{border-top:3px solid var(--forest)}
+.card.accent-blue{border-top:3px solid var(--blue)}
+.card.accent-plum{border-top:3px solid var(--plum)}
+.card.accent-teal{border-top:3px solid var(--teal)}
+.card.accent-warm{border-top:3px solid var(--warm)}
+.card.dark{background:var(--black);border-color:#2a2520}
+.card.cream{background:var(--cream)}
+.card-label{font-size:9px;letter-spacing:.32em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.card-label.gold{color:var(--gold)}
+.card-label.forest{color:#4a9a70}
+.card-label.blue{color:#6a8ab0}
+.card-label.plum{color:#9a6a9a}
+.card-label.teal{color:#4a9a7a}
+.card-label.warm{color:#9a7a4a}
+.card h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:8px;line-height:1.2}
+.card h3 em{font-style:italic;color:var(--gold)}
+.card.dark h3{color:#f0ebe0}
+.card p{font-size:13px;color:var(--muted);line-height:1.75}
+.card.dark p{color:#6a5f50}
+.card-divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.card.dark .card-divider{border-top-color:#2a2520}
+
+/* ── NOTICE BOXES ── */
+.notice{background:#1a1510;border-left:3px solid var(--gold);padding:14px 18px;border-radius:0 4px 4px 0;margin-bottom:22px}
+.notice p{font-size:13px;color:#e8e0d0;line-height:1.75}
+.notice strong{color:#d4b47a}
+.notice-light{background:var(--cream);border-left:3px solid var(--gold2);padding:14px 18px;border-radius:0 4px 4px 0;margin-bottom:22px}
+.notice-light p{font-size:13px;color:var(--sub);line-height:1.75}
+.notice-light strong{color:var(--gold)}
+
+/* ── BADGES ── */
+.badge{font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;padding:3px 8px;border-radius:2px}
+.badge-gold{background:#f5ead8;color:var(--gold)}
+.badge-green{background:#e8f2ec;color:var(--forest)}
+.badge-blue{background:#e0e8f2;color:var(--blue)}
+.badge-plum{background:#f0e8f0;color:var(--plum)}
+.badge-teal{background:#e0f0ec;color:var(--teal)}
+.badge-dark{background:var(--black);color:var(--gold2)}
+
+/* ── SEC HEAD ── */
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.sec-head h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400}
+.sec-head h3 em{font-style:italic;color:var(--gold)}
+
+/* ── OFFER TABS ── */
+.offer-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:24px;width:fit-content}
+.otab{background:var(--white);border:none;border-right:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:10px 20px;transition:all .2s;white-space:nowrap}
+.otab:last-child{border-right:none}
+.otab:hover{color:var(--sub)}
+.otab.active{background:var(--black);color:var(--gold2)}
+.offer-panel{display:none}
+.offer-panel.active{display:block}
+
+/* ── PRICE CARD ── */
+.price-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px;display:flex;flex-direction:column;height:100%}
+.price-card.featured{border-color:var(--gold);border-top:3px solid var(--gold)}
+.price-card.dark-card{background:var(--black);border-color:#2a2520;border-top:3px solid var(--gold)}
+.price-badge{margin-bottom:16px}
+.price-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--text);margin-bottom:6px;line-height:1.1}
+.price-card.dark-card .price-name{color:#f5f0e8}
+.price-tagline{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.price-card.dark-card .price-tagline{color:#6a5f50}
+.price-amount{font-family:'DM Mono',monospace;font-size:32px;font-weight:500;color:var(--gold);margin-bottom:4px}
+.price-note{font-size:11px;color:var(--muted);margin-bottom:20px}
+.price-divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.price-card.dark-card .price-divider{border-top-color:#2a2520}
+.price-includes{font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-bottom:12px}
+.price-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;font-size:13px;color:var(--sub)}
+.price-card.dark-card .price-item{color:#8a7d6a}
+.price-check{color:var(--gold);font-size:11px;margin-top:3px;flex-shrink:0}
+.price-cta{margin-top:auto;padding-top:20px}
+.btn-offer{width:100%;background:var(--gold);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:13px 20px;border-radius:2px;transition:background .2s}
+.btn-offer:hover{background:#7a5830}
+.btn-offer.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold2)}
+.btn-offer.ghost:hover{background:var(--gold);color:#fff}
+
+/* ── PROCESS ── */
+.process-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;position:relative}
+.process-step{padding:28px 24px;position:relative}
+.process-step::after{content:'';position:absolute;top:44px;right:-1px;width:1px;height:40px;background:var(--border)}
+.process-step:last-child::after{display:none}
+.step-num{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--gold3);opacity:.6;margin-bottom:12px;line-height:1}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--text);margin-bottom:8px}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* ── TRANSFORMATION ── */
+.transform-row{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.transform-row:last-child{border-bottom:none}
+.t-before{font-size:13px;color:var(--muted);text-align:right;padding-right:20px;font-weight:300;font-style:italic}
+.t-arrow{font-size:18px;color:var(--gold2);font-family:'Cormorant Garamond',serif;flex-shrink:0;text-align:center}
+.t-after{font-size:13px;color:var(--sub);padding-left:20px;font-weight:500}
+
+/* ── TESTIMONIALS ── */
+.testimonial{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:24px;position:relative}
+.testimonial::before{content:'\201C';font-family:'Cormorant Garamond',serif;font-size:60px;color:var(--gold3);opacity:.4;position:absolute;top:10px;left:18px;line-height:1}
+.testimonial-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;font-style:italic;color:var(--sub);line-height:1.7;margin-bottom:16px;padding-top:24px}
+.testimonial-author{display:flex;align-items:center;gap:10px}
+.testimonial-avatar{width:36px;height:36px;border-radius:50%;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);flex-shrink:0}
+.testimonial-name{font-size:12px;font-weight:600;color:var(--sub)}
+.testimonial-role{font-size:11px;color:var(--muted)}
+
+/* ── FAQ ── */
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);transition:color .2s}
+.faq-q:hover{color:var(--gold)}
+.faq-icon{font-size:18px;color:var(--gold2);transition:transform .25s;flex-shrink:0;margin-left:12px}
+.faq-icon.open{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-a.open{max-height:300px;padding-bottom:16px}
+.faq-a p{font-size:13px;color:var(--muted);line-height:1.8}
+
+/* ── DIGITAL PRODUCTS ── */
+.product-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:20px;display:flex;flex-direction:column}
+.product-icon{width:40px;height:40px;border-radius:3px;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
+.product-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--text);margin-bottom:6px}
+.product-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px;flex:1}
+.product-price{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--gold);margin-bottom:14px}
+.btn-product{background:var(--cream);color:var(--sub);border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:10px 16px;border-radius:2px;transition:all .2s;width:100%}
+.btn-product:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:32px}
+.stat-cell{background:var(--black);padding:24px 20px;text-align:center}
+.stat-num{font-family:'DM Mono',monospace;font-size:30px;font-weight:500;color:var(--gold3);margin-bottom:4px}
+.stat-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6a5f50;font-weight:600}
+
+/* ── BOOKING CTA ── */
+.booking-wrap{background:var(--black);border:1px solid #2a2520;border-top:3px solid var(--gold);border-radius:4px;padding:40px 36px;text-align:center}
+.booking-wrap .bk-eyebrow{font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold2);font-weight:600;margin-bottom:12px}
+.booking-wrap h3{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,38px);font-weight:300;color:#f5f0e8;margin-bottom:12px;line-height:1.15}
+.booking-wrap h3 em{font-style:italic;color:var(--gold3)}
+.booking-wrap p{font-size:13px;color:#6a5f50;max-width:480px;margin:0 auto 28px;line-height:1.8}
+.booking-options{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+.footer{background:var(--black);border-top:1px solid #2a2520;padding:32px 28px 28px}
+.footer-inner{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.footer-brand .eyebrow{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+.footer-brand p{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:#f5f0e8}
+.footer-brand p em{color:var(--gold3);font-style:italic}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-link{font-size:11px;color:#4a3f30;font-weight:500;letter-spacing:.06em;cursor:pointer;background:none;border:none;transition:color .2s}
+.footer-link:hover{color:var(--gold2)}
+.footer-copy{font-size:10px;color:#2a2520;margin-top:20px;letter-spacing:.1em;text-transform:uppercase}
+
+/* ── SCROLL TOP ── */
+#scroll-top{position:fixed;bottom:24px;right:24px;width:38px;height:38px;background:var(--gold);border:none;border-radius:2px;cursor:pointer;display:none;align-items:center;justify-content:center;color:#fff;font-size:16px;z-index:100;transition:background .2s}
+#scroll-top.visible{display:flex}
+#scroll-top:hover{background:var(--sub)}
+
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-card{display:none}
+  .grid-mx{grid-template-columns:1fr}
+  .process-step::after{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="eyebrow">AI Workflow & Operations Consulting</div>
+      <h1>AI Operations Studio <em>— Work Smarter.</em></h1>
+    </div>
+    <div class="header-right">
+      <div class="tagline">Strategy. Systems. Simplicity.</div>
+      <div class="sub">For Entrepreneurs &amp; Professionals</div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-tabs">
+      <button class="nav-btn active" data-tab="home">Overview</button>
+      <button class="nav-btn" data-tab="why">Why This Works</button>
+      <button class="nav-btn" data-tab="services">Services</button>
+      <button class="nav-btn" data-tab="offers">Offers &amp; Pricing</button>
+      <button class="nav-btn" data-tab="products">Digital Products</button>
+      <button class="nav-btn" data-tab="process">How It Works</button>
+      <button class="nav-btn" data-tab="faq">FAQ</button>
+    </div>
+    <button class="nav-cta" onclick="showTab('offers')">Book a Call →</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: HOME / OVERVIEW
+═══════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">AI Workflow Strategy &amp; Operational Systems</div>
+        <h2>Your Business Could Run<br><em>Smarter Than It Does Today.</em></h2>
+        <p class="hero-sub">I design and build the AI-powered workflows, operational systems, and productivity frameworks that help entrepreneurs and professionals stop working harder — and start working with precision.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showTab('offers')">View Offers &amp; Pricing</button>
+          <button class="btn-ghost" onclick="showTab('why')">Why This Works →</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-label">What Clients Experience</div>
+        <div class="hc-stat">
+          <div class="hc-num">10+</div>
+          <div class="hc-desc">hours saved per week through workflow automation and AI systems</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-num">48hr</div>
+          <div class="hc-desc">average time to see first measurable AI productivity wins</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-num">100%</div>
+          <div class="hc-desc">custom-built to your specific business, tools, and goals</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-num">Zero</div>
+          <div class="hc-desc">technical background required — built for real business owners</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-inner">
+      <div class="trust-item"><div class="trust-dot"></div> AI Workflow Strategy</div>
+      <div class="trust-item"><div class="trust-dot"></div> Systems &amp; Dashboards</div>
+      <div class="trust-item"><div class="trust-dot"></div> AI Prompt Libraries</div>
+      <div class="trust-item"><div class="trust-dot"></div> Business Automation</div>
+      <div class="trust-item"><div class="trust-dot"></div> Executive Productivity</div>
+      <div class="trust-item"><div class="trust-dot"></div> Team AI Training</div>
+      <div class="trust-item"><div class="trust-dot"></div> Operational Audits</div>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">The Reality</div>
+        <h2>You're Leaving Time, Money &amp; <em>Clarity</em> on the Table.</h2>
+        <p>Most business owners know AI could help them — but they're too busy surviving their current workflow to figure out how. Sound familiar?</p>
+      </div>
+      <div class="notice">
+        <p>If you're running your business on scattered tools, manual processes, and guesswork — <strong>you're working two to three times harder than you need to.</strong> AI changes this. The right systems change everything.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card accent-gold">
+          <div class="card-label gold">Pain Point 01</div>
+          <h3>Too Many Tools,<br><em>No System</em></h3>
+          <p>You're paying for 6+ apps and none of them talk to each other. Your data lives in 4 places and your brain holds the rest.</p>
+        </div>
+        <div class="card accent-teal">
+          <div class="card-label teal">Pain Point 02</div>
+          <h3>AI Confusion<br><em>&amp; Overwhelm</em></h3>
+          <p>You know ChatGPT exists. You've tried it twice. You got generic results and went back to doing it manually — because no one showed you how to actually use it.</p>
+        </div>
+        <div class="card accent-plum">
+          <div class="card-label plum">Pain Point 03</div>
+          <h3>Reactive Instead<br><em>of Strategic</em></h3>
+          <p>Your day is full but your business isn't moving. You're constantly busy but can't identify where your time actually went or what it produced.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT I DO -->
+  <div class="section bg-cream">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">What I Do</div>
+        <h2>I Build the Operating System<br><em>Your Business Is Missing.</em></h2>
+        <p>I'm an AI Workflow Strategist. I design, build, and implement the systems that turn your business from reactive to optimized — using AI tools you already have or will have within a week.</p>
+      </div>
+      <div class="grid-mx">
+        <div>
+          <div class="sec-head"><h3>The <em>Work</em> I Do</h3></div>
+          <div style="display:grid;gap:10px">
+            <div class="card accent-gold" style="padding:16px">
+              <div class="card-label gold">Strategy</div>
+              <p style="font-size:13px;color:var(--sub)">Map every inefficiency in your business and build a custom AI opportunity plan you can execute immediately.</p>
+            </div>
+            <div class="card accent-forest" style="padding:16px">
+              <div class="card-label forest">Build</div>
+              <p style="font-size:13px;color:var(--sub)">Design and install your workflows, automation systems, operational dashboards, and prompt libraries from scratch.</p>
+            </div>
+            <div class="card accent-teal" style="padding:16px">
+              <div class="card-label teal">Coach</div>
+              <p style="font-size:13px;color:var(--sub)">Train you and your team to use AI confidently — so you maintain and expand the system without depending on anyone.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-head"><h3>Who This Is <em>For</em></h3></div>
+          <div class="card" style="height:calc(100% - 44px)">
+            <p style="margin-bottom:14px">This work is for you if you're:</p>
+            <div style="display:grid;gap:8px">
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)">
+                <span style="color:var(--gold);font-size:14px;margin-top:1px">◆</span>
+                <span style="font-size:13px;color:var(--sub)">A coach, consultant, or service provider earning $3K–$20K/month who's running on chaos</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)">
+                <span style="color:var(--gold);font-size:14px;margin-top:1px">◆</span>
+                <span style="font-size:13px;color:var(--sub)">A solopreneur who needs to operate like a team without hiring a team</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)">
+                <span style="color:var(--gold);font-size:14px;margin-top:1px">◆</span>
+                <span style="font-size:13px;color:var(--sub)">An executive or professional who wants AI working for them, not at them</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)">
+                <span style="color:var(--gold);font-size:14px;margin-top:1px">◆</span>
+                <span style="font-size:13px;color:var(--sub)">Anyone who knows AI is important and is tired of not knowing where to start</span>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0">
+                <span style="color:var(--gold);font-size:14px;margin-top:1px">◆</span>
+                <span style="font-size:13px;color:var(--sub)">Small teams that need a consistent, repeatable way to deliver excellent work</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSFORMATION PREVIEW -->
+  <div class="section bg-white">
+    <div class="section-inner">
+      <div style="max-width:740px;margin:0 auto">
+        <div class="pg-head" style="text-align:center;border:none">
+          <div class="pg-num">The Shift</div>
+          <h2>From Scattered<br><em>to Systemized.</em></h2>
+        </div>
+        <div class="card">
+          <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin-bottom:6px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+            <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:600;color:var(--muted);text-align:right;padding-right:20px">Before</div>
+            <div></div>
+            <div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:600;color:var(--gold);padding-left:20px">After</div>
+          </div>
+          <div class="transform-row"><div class="t-before">Manually writing every email, caption, and document</div><div class="t-arrow">→</div><div class="t-after">AI drafts it in seconds, you refine in minutes</div></div>
+          <div class="transform-row"><div class="t-before">Client onboarding takes 3 hours of back-and-forth</div><div class="t-arrow">→</div><div class="t-after">Automated, polished, and running on autopilot</div></div>
+          <div class="transform-row"><div class="t-before">Ideas scattered across notes, DMs, and your brain</div><div class="t-arrow">→</div><div class="t-after">One organized system that captures and executes</div></div>
+          <div class="transform-row"><div class="t-before">Spending 2hrs on content that takes AI 10 minutes</div><div class="t-arrow">→</div><div class="t-after">Content batched, repurposed, and scheduled weekly</div></div>
+          <div class="transform-row"><div class="t-before">No clear view of what's working in your business</div><div class="t-arrow">→</div><div class="t-after">A live dashboard that shows you exactly what matters</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING CTA -->
+  <div class="section">
+    <div class="section-inner">
+      <div class="booking-wrap">
+        <div class="bk-eyebrow">Ready to Get Started?</div>
+        <h3>Let's Build Your<br><em>AI-Powered Operation.</em></h3>
+        <p>Start with a no-pressure strategy call to map exactly what needs to change — and how fast we can change it.</p>
+        <div class="booking-options">
+          <button class="btn-primary" style="padding:14px 32px" onclick="showTab('offers')">View All Offers</button>
+          <button class="btn-ghost" style="padding:14px 32px" onclick="showTab('process')">See How It Works</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: WHY THIS WORKS
+═══════════════════════════════════════════ -->
+<div id="page-why" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">The Value</div>
+        <h2>Why Investing in <em>AI Systems</em><br>Is the Highest-ROI Decision You Can Make.</h2>
+        <p>This isn't about learning a tool. It's about building infrastructure. The businesses that win in the next decade are the ones that operationalize AI now — and I help you do that.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-cell"><div class="stat-num">10+</div><div class="stat-label">Hours Saved / Week</div></div>
+        <div class="stat-cell"><div class="stat-num">3×</div><div class="stat-label">Faster Content Output</div></div>
+        <div class="stat-cell"><div class="stat-num">$0</div><div class="stat-label">Extra Hires Needed</div></div>
+        <div class="stat-cell"><div class="stat-num">48hr</div><div class="stat-label">To First AI Win</div></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:32px">
+        <div class="card accent-gold">
+          <div class="card-label gold">Value Pillar 01</div>
+          <h3>You Get <em>Time Back</em></h3>
+          <p>Every workflow I build is designed to eliminate repetitive, low-value work from your plate. The average client reclaims 8–12 hours per week within the first month — time they redirect toward revenue, creativity, and rest.</p>
+        </div>
+        <div class="card accent-teal">
+          <div class="card-label teal">Value Pillar 02</div>
+          <h3>You Get <em>Consistent Quality</em></h3>
+          <p>Systems don't have bad days. When your onboarding, content, and delivery workflows run on AI-powered SOPs, your clients always receive the same polished, professional experience — regardless of how full your plate is.</p>
+        </div>
+        <div class="card accent-blue">
+          <div class="card-label blue">Value Pillar 03</div>
+          <h3>You Scale <em>Without Burnout</em></h3>
+          <p>The bottleneck in most businesses isn't demand — it's capacity. AI-powered systems allow you to serve more clients, produce more content, and run more offers without adding to your workload or your payroll.</p>
+        </div>
+        <div class="card accent-plum">
+          <div class="card-label plum">Value Pillar 04</div>
+          <h3>You Gain <em>Strategic Clarity</em></h3>
+          <p>When your operations are organized and automated, you get something most business owners never have: visibility. You can see what's working, what isn't, and exactly where your next dollar should go.</p>
+        </div>
+      </div>
+
+      <div class="notice">
+        <p><strong>Here's the truth no one says out loud:</strong> your competitors are already using AI. The question is whether you're using it strategically or just dabbling. My job is to make sure you're so far ahead, catching up isn't an option for them.</p>
+      </div>
+
+      <div class="card dark col-span-2" style="padding:32px">
+        <div class="card-label gold">My Approach</div>
+        <h3 style="font-size:26px;margin-bottom:14px">Business First. <em>Technology Second.</em></h3>
+        <p style="margin-bottom:18px">I don't come in throwing AI tools at your problems. I start by understanding your business, your goals, and where your time is actually going. Then I design a system that fits your life — not someone else's template.</p>
+        <p>I speak fluent entrepreneur. I translate AI from intimidating to inevitable. Everything I build comes with documentation, training, and a clear explanation of why — so you're never dependent on me to keep it running.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="section bg-cream">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">Client Results</div>
+        <h2>What Happens When the<br><em>Systems Are in Place.</em></h2>
+      </div>
+      <div class="grid-3">
+        <div class="testimonial">
+          <div class="testimonial-text">I went from spending every Sunday catching up on admin to having my entire week practically running itself. The operations system alone was worth five times what I paid.</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">S</div>
+            <div><div class="testimonial-name">Sarah M.</div><div class="testimonial-role">Business Coach</div></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-text">I thought I needed to hire someone. What I actually needed was a system. My client onboarding used to take 3 hours. Now it happens automatically before I even sit down at my desk.</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div><div class="testimonial-name">David K.</div><div class="testimonial-role">Marketing Consultant</div></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="testimonial-text">I was intimidated by AI — convinced it wasn't for me. One session changed everything. I now have a prompt library I use daily and my content creation time dropped by 70%.</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">A</div>
+            <div><div class="testimonial-name">Alexis T.</div><div class="testimonial-role">E-commerce Founder</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: SERVICES
+═══════════════════════════════════════════ -->
+<div id="page-services" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">Services Menu</div>
+        <h2>Everything I Offer —<br><em>One Strategist, Full Spectrum.</em></h2>
+        <p>From a single strategy call to a full operational overhaul — there's a right entry point for where you are right now. Every service is custom-built to your business.</p>
+      </div>
+
+      <div style="margin-bottom:36px">
+        <div class="sec-head"><h3><em>Strategy</em> &amp; Consulting</h3><span class="badge badge-gold">Foundation</span></div>
+        <div class="grid-3">
+          <div class="card accent-gold">
+            <div class="card-label gold">Strategy</div>
+            <h3>AI Clarity Call</h3>
+            <p>A focused 60-minute session to audit your current workflows, identify your 3 highest-impact AI opportunities, and deliver a personalized next-steps roadmap.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$197</div>
+          </div>
+          <div class="card accent-gold">
+            <div class="card-label gold">Strategy</div>
+            <h3>Operational Audit</h3>
+            <p>A comprehensive review of your entire business workflow. I map every process, identify inefficiencies, and deliver a prioritized AI optimization plan with implementation guidance.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$397–$697</div>
+          </div>
+          <div class="card accent-gold">
+            <div class="card-label gold">Strategy</div>
+            <h3>AI Strategy Session</h3>
+            <p>A 90-minute deep-dive to map AI integration opportunities across your full business — content, client delivery, admin, and growth. Includes a written strategy document.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$297–$497</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:36px">
+        <div class="sec-head"><h3><em>Implementation</em> &amp; Build</h3><span class="badge badge-teal">Done For You</span></div>
+        <div class="grid-3">
+          <div class="card accent-teal">
+            <div class="card-label teal">Build</div>
+            <h3>AI Workflow Setup</h3>
+            <p>I design and build 3–5 custom AI-powered workflows in your existing tools. From content creation to client management — your business on autopilot.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$497–$1,497</div>
+          </div>
+          <div class="card accent-teal">
+            <div class="card-label teal">Build</div>
+            <h3>Business Operations System</h3>
+            <p>A fully custom digital workspace built to serve as your business command center — client management, task systems, content planning, and financial tracking, all in one place.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$497–$997</div>
+          </div>
+          <div class="card accent-teal">
+            <div class="card-label teal">Build</div>
+            <h3>Custom Prompt Library</h3>
+            <p>A professionally crafted, organized library of AI prompts built specifically for your role, business type, and daily workflows. Yours to use and expand forever.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$197–$597</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:36px">
+        <div class="sec-head"><h3><em>Coaching</em> &amp; Education</h3><span class="badge badge-plum">1:1 &amp; Group</span></div>
+        <div class="grid-3">
+          <div class="card accent-plum">
+            <div class="card-label plum">Coaching</div>
+            <h3>AI Fluency Coaching</h3>
+            <p>Monthly 1:1 coaching to build your AI skill set at your own pace. Custom learning path, real-world application, and accountability to actually implement what you learn.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$597–$997/mo</div>
+          </div>
+          <div class="card accent-plum">
+            <div class="card-label plum">Education</div>
+            <h3>Team AI Training</h3>
+            <p>A structured 3-session AI training program for your team. Custom prompt libraries, policy guides, and workflow training built for your specific tools and industry.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$1,500–$4,500</div>
+          </div>
+          <div class="card accent-plum">
+            <div class="card-label plum">Group</div>
+            <h3>AI Literacy Workshop</h3>
+            <p>A live group workshop covering AI fundamentals, practical tool usage, and workflow integration. Perfect for teams, masterminds, or organizations seeking baseline AI literacy.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold)">$197–$397/person</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-head"><h3><em>Premium</em> Engagements</h3><span class="badge badge-dark">High-Touch</span></div>
+        <div class="grid-2">
+          <div class="card dark accent-gold">
+            <div class="card-label gold">Premium</div>
+            <h3>AI Workflow Intensive</h3>
+            <p>A focused half-day (4 hours) working session. We audit your workflows, build 2 custom AI automations live, and walk away with a 90-day implementation roadmap you can execute immediately.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:20px;color:var(--gold)">$997–$1,497</div>
+          </div>
+          <div class="card dark accent-gold">
+            <div class="card-label gold">Elite</div>
+            <h3>VIP Strategy Day</h3>
+            <p>A full-day immersive engagement to redesign your entire operational infrastructure. Audit, strategy, live system builds, complete 90-day roadmap, and 2 weeks of follow-up email support included.</p>
+            <hr class="card-divider"/>
+            <div style="font-family:'DM Mono',monospace;font-size:20px;color:var(--gold)">$2,500–$4,500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: OFFERS & PRICING
+═══════════════════════════════════════════ -->
+<div id="page-offers" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">Offers &amp; Pricing</div>
+        <h2>Choose the Right<br><em>Starting Point</em> for You.</h2>
+        <p>Every engagement begins where you are. Whether you need quick wins or a full transformation — there's an offer designed exactly for your stage.</p>
+      </div>
+
+      <div class="offer-tabs">
+        <button class="otab active" onclick="switchOffer(this,'entry')">Entry Point</button>
+        <button class="otab" onclick="switchOffer(this,'core')">Core Offers</button>
+        <button class="otab" onclick="switchOffer(this,'premium')">Premium</button>
+        <button class="otab" onclick="switchOffer(this,'recurring')">Recurring</button>
+      </div>
+
+      <!-- ENTRY -->
+      <div id="offer-entry" class="offer-panel active">
+        <div class="notice-light"><p>These are the <strong>lowest-risk, highest-speed</strong> ways to experience working together. Start here if you're new to AI consulting or want to test before committing to a larger engagement.</p></div>
+        <div class="grid-3">
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-gold">Digital Product</span></div>
+            <div class="price-name">AI Starter Kit</div>
+            <div class="price-tagline">Everything you need to start using AI in your business this week. Tools, prompts, and a step-by-step guide — no tech background required.</div>
+            <div class="price-amount">$37</div>
+            <div class="price-note">Instant digital download</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> Curated AI tool guide for your business type</div>
+            <div class="price-item"><span class="price-check">◆</span> 25 ready-to-use business prompts</div>
+            <div class="price-item"><span class="price-check">◆</span> 5-step AI onboarding checklist</div>
+            <div class="price-item"><span class="price-check">◆</span> Tool setup reference sheet</div>
+            <div class="price-cta"><button class="btn-offer">Get Instant Access</button></div>
+          </div>
+          <div class="price-card featured">
+            <div class="price-badge"><span class="badge badge-gold">Most Popular</span></div>
+            <div class="price-name">AI Clarity Call</div>
+            <div class="price-tagline">A 60-minute 1:1 strategy session to identify your 3 highest-impact AI opportunities and walk away with a clear, personalized next-step plan.</div>
+            <div class="price-amount">$197</div>
+            <div class="price-note">60-minute Zoom session + deliverables</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> Live workflow audit (15 min)</div>
+            <div class="price-item"><span class="price-check">◆</span> AI opportunity mapping (30 min)</div>
+            <div class="price-item"><span class="price-check">◆</span> Personalized roadmap document</div>
+            <div class="price-item"><span class="price-check">◆</span> 3 specific quick-win recommendations</div>
+            <div class="price-item"><span class="price-check">◆</span> Follow-up resource list</div>
+            <div class="price-cta"><button class="btn-offer">Book Your Call</button></div>
+          </div>
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-teal">Done For You</span></div>
+            <div class="price-name">AI Workflow Audit</div>
+            <div class="price-tagline">Submit a recording of your workflow and receive a detailed video audit with specific AI improvements, tool recommendations, and an action plan.</div>
+            <div class="price-amount">$147</div>
+            <div class="price-note">Async — delivered within 72 hours</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> Detailed Loom video walkthrough</div>
+            <div class="price-item"><span class="price-check">◆</span> 1-page AI improvement plan</div>
+            <div class="price-item"><span class="price-check">◆</span> Prioritized action list</div>
+            <div class="price-item"><span class="price-check">◆</span> Tool recommendations (free &amp; paid)</div>
+            <div class="price-cta"><button class="btn-offer">Submit Your Workflow</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CORE -->
+      <div id="offer-core" class="offer-panel">
+        <div class="notice-light"><p>These are the <strong>most transformative offers</strong> for business owners ready to install real systems. Best for those who've identified the problem and are ready to solve it properly.</p></div>
+        <div class="grid-2">
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-teal">Build</span></div>
+            <div class="price-name">Business Operations System</div>
+            <div class="price-tagline">Your fully custom digital workspace — built to run your entire business from one organized, AI-integrated system.</div>
+            <div class="price-amount">$497–$997</div>
+            <div class="price-note">Delivered within 5–7 business days</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> Custom digital workspace build</div>
+            <div class="price-item"><span class="price-check">◆</span> Client management system</div>
+            <div class="price-item"><span class="price-check">◆</span> Content &amp; project planning</div>
+            <div class="price-item"><span class="price-check">◆</span> AI integration points mapped</div>
+            <div class="price-item"><span class="price-check">◆</span> Video walkthrough + setup call</div>
+            <div class="price-cta"><button class="btn-offer">Get Your OS Built</button></div>
+          </div>
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-gold">Strategy + Build</span></div>
+            <div class="price-name">AI Workflow Intensive</div>
+            <div class="price-tagline">A half-day working session where we audit, strategize, and build your first 2 AI workflows live — together.</div>
+            <div class="price-amount">$997–$1,497</div>
+            <div class="price-note">4-hour Zoom session + follow-up</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> Full workflow audit (30 min)</div>
+            <div class="price-item"><span class="price-check">◆</span> 2 live AI workflow builds (3 hrs)</div>
+            <div class="price-item"><span class="price-check">◆</span> Custom prompt library starter</div>
+            <div class="price-item"><span class="price-check">◆</span> 90-day implementation roadmap</div>
+            <div class="price-item"><span class="price-check">◆</span> 1-week email support post-session</div>
+            <div class="price-cta"><button class="btn-offer">Book Your Intensive</button></div>
+          </div>
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-plum">Coaching</span></div>
+            <div class="price-name">AI Fluency Coaching</div>
+            <div class="price-tagline">Monthly 1:1 coaching to build your AI skills, implement what you learn, and continuously improve your business systems.</div>
+            <div class="price-amount">$597/mo</div>
+            <div class="price-note">3-month minimum commitment</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> 2 × 60-min coaching calls/month</div>
+            <div class="price-item"><span class="price-check">◆</span> Async feedback via voice message</div>
+            <div class="price-item"><span class="price-check">◆</span> Monthly workflow review</div>
+            <div class="price-item"><span class="price-check">◆</span> Resource recommendations</div>
+            <div class="price-item"><span class="price-check">◆</span> Custom learning path</div>
+            <div class="price-cta"><button class="btn-offer">Apply to Work Together</button></div>
+          </div>
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-green">Workshop</span></div>
+            <div class="price-name">Workflow Clarity Workshop</div>
+            <div class="price-tagline">A live group workshop teaching you to map, optimize, and automate your 3 core business workflows using AI — in one session.</div>
+            <div class="price-amount">$297</div>
+            <div class="price-note">Live group session (2.5 hrs)</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> 3 documented workflow maps</div>
+            <div class="price-item"><span class="price-check">◆</span> AI integration points identified</div>
+            <div class="price-item"><span class="price-check">◆</span> Template bundle included</div>
+            <div class="price-item"><span class="price-check">◆</span> Recording for replay access</div>
+            <div class="price-cta"><button class="btn-offer">Join Next Workshop</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PREMIUM -->
+      <div id="offer-premium" class="offer-panel">
+        <div class="notice"><p>These are <strong>high-touch, high-transformation engagements</strong> for founders and executives ready to fully overhaul how their business operates. Application required.</p></div>
+        <div class="grid-2">
+          <div class="price-card dark-card">
+            <div class="price-badge"><span class="badge badge-dark">Premium</span></div>
+            <div class="price-name">VIP Strategy Day</div>
+            <div class="price-tagline">A full-day immersive experience to redesign your entire operational infrastructure — from audit to implementation, in a single focused day.</div>
+            <div class="price-amount">$2,500–$4,500</div>
+            <div class="price-note">Full day (6–8 hrs) + 2-week support</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> Complete business ops audit</div>
+            <div class="price-item"><span class="price-check">◆</span> Custom AI business OS design</div>
+            <div class="price-item"><span class="price-check">◆</span> 3–5 live AI workflow installs</div>
+            <div class="price-item"><span class="price-check">◆</span> Prompt library built for your business</div>
+            <div class="price-item"><span class="price-check">◆</span> 90-day implementation roadmap</div>
+            <div class="price-item"><span class="price-check">◆</span> 2 weeks follow-up email support</div>
+            <div class="price-cta"><button class="btn-offer">Apply for VIP Day</button></div>
+          </div>
+          <div class="price-card dark-card">
+            <div class="price-badge"><span class="badge badge-dark">Corporate</span></div>
+            <div class="price-name">Team AI Training Program</div>
+            <div class="price-tagline">A structured 3-session AI training series for your entire team — custom-built for your tools, industry, and daily workflows.</div>
+            <div class="price-amount">$1,500–$4,500</div>
+            <div class="price-note">3-session series + materials</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Includes</div>
+            <div class="price-item"><span class="price-check">◆</span> 3 × 90-min team workshops</div>
+            <div class="price-item"><span class="price-check">◆</span> Custom team prompt library</div>
+            <div class="price-item"><span class="price-check">◆</span> AI usage policy &amp; guide document</div>
+            <div class="price-item"><span class="price-check">◆</span> Tool setup support for the team</div>
+            <div class="price-item"><span class="price-check">◆</span> Recording access for all sessions</div>
+            <div class="price-item"><span class="price-check">◆</span> 30-day post-training email support</div>
+            <div class="price-cta"><button class="btn-offer">Inquire for Your Team</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECURRING -->
+      <div id="offer-recurring" class="offer-panel">
+        <div class="notice-light"><p>These offers provide <strong>continuous, compounding value</strong> — for clients who want AI to be an always-improving part of how their business runs.</p></div>
+        <div class="grid-3">
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-gold">Membership</span></div>
+            <div class="price-name">The AI Operating Room</div>
+            <div class="price-tagline">Monthly AI education, templates, workshops, and office hours — for business owners who want to stay ahead of the curve, consistently.</div>
+            <div class="price-amount">$47/mo</div>
+            <div class="price-note">Cancel anytime · No commitment</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Monthly Deliverables</div>
+            <div class="price-item"><span class="price-check">◆</span> 2 × live workshops</div>
+            <div class="price-item"><span class="price-check">◆</span> Monthly template drop</div>
+            <div class="price-item"><span class="price-check">◆</span> Private community access</div>
+            <div class="price-item"><span class="price-check">◆</span> Monthly office hours Q&amp;A</div>
+            <div class="price-item"><span class="price-check">◆</span> Resource library access</div>
+            <div class="price-cta"><button class="btn-offer">Join the Community</button></div>
+          </div>
+          <div class="price-card featured">
+            <div class="price-badge"><span class="badge badge-gold">Group Coaching</span></div>
+            <div class="price-name">Workflow Founders Circle</div>
+            <div class="price-tagline">Group coaching with implementation support — the strategic community for founders actively building and optimizing their AI-powered businesses.</div>
+            <div class="price-amount">$97/mo</div>
+            <div class="price-note">3-month minimum recommended</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Monthly Deliverables</div>
+            <div class="price-item"><span class="price-check">◆</span> 2 × live group coaching calls</div>
+            <div class="price-item"><span class="price-check">◆</span> Live workflow builds on calls</div>
+            <div class="price-item"><span class="price-check">◆</span> Monthly AI audit feedback</div>
+            <div class="price-item"><span class="price-check">◆</span> Templates + SOPs included</div>
+            <div class="price-item"><span class="price-check">◆</span> Community async support</div>
+            <div class="price-cta"><button class="btn-offer">Apply to Join</button></div>
+          </div>
+          <div class="price-card">
+            <div class="price-badge"><span class="badge badge-dark">Retainer</span></div>
+            <div class="price-name">Fractional AI Ops Director</div>
+            <div class="price-tagline">Ongoing strategic AI operations support — I function as your part-time Director of AI Operations, owning your strategy and execution month to month.</div>
+            <div class="price-amount">$2,500/mo</div>
+            <div class="price-note">3-month minimum · Application required</div>
+            <hr class="price-divider"/>
+            <div class="price-includes">Monthly Deliverables</div>
+            <div class="price-item"><span class="price-check">◆</span> Monthly strategy session (90 min)</div>
+            <div class="price-item"><span class="price-check">◆</span> Workflow builds + updates</div>
+            <div class="price-item"><span class="price-check">◆</span> Weekly async check-in</div>
+            <div class="price-item"><span class="price-check">◆</span> Tool management + optimization</div>
+            <div class="price-item"><span class="price-check">◆</span> Priority support response</div>
+            <div class="price-cta"><button class="btn-offer ghost">Apply for Retainer</button></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: DIGITAL PRODUCTS
+═══════════════════════════════════════════ -->
+<div id="page-products" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">Digital Products</div>
+        <h2>Start Instantly with a<br><em>Done-for-You</em> Resource.</h2>
+        <p>Ready-to-use templates, guides, and toolkits that deliver immediate value. The fastest way to start improving your workflows and AI fluency today.</p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:32px">
+        <div class="product-card">
+          <div class="product-icon">📋</div>
+          <div style="margin-bottom:8px"><span class="badge badge-gold">Starter Kit</span></div>
+          <div class="product-name">The AI Founder Starter Kit</div>
+          <div class="product-desc">Your complete introduction to using AI in business. Includes a curated tool guide, 25 prompts, a 5-step onboarding checklist, and a reference sheet — everything you need to get started in 48 hours.</div>
+          <div class="product-price">$37</div>
+          <button class="btn-product">Get Instant Access</button>
+        </div>
+        <div class="product-card">
+          <div class="product-icon">📓</div>
+          <div style="margin-bottom:8px"><span class="badge badge-teal">Digital Template</span></div>
+          <div class="product-name">AI Business OS Template</div>
+          <div class="product-desc">A fully designed, ready-to-use digital workspace to run your entire business. Includes project management, client tracking, content planning, and AI-integrated workflows. Setup video included.</div>
+          <div class="product-price">$67</div>
+          <button class="btn-product">Get the Template</button>
+        </div>
+        <div class="product-card">
+          <div class="product-icon">💬</div>
+          <div style="margin-bottom:8px"><span class="badge badge-plum">Prompt Library</span></div>
+          <div class="product-name">The AI Business Prompt Vault</div>
+          <div class="product-desc">100+ professionally crafted prompts organized by category — content creation, client communication, marketing, strategy, admin, and more. Stop getting generic AI results forever.</div>
+          <div class="product-price">$67</div>
+          <button class="btn-product">Get the Vault</button>
+        </div>
+        <div class="product-card">
+          <div class="product-icon">⚡</div>
+          <div style="margin-bottom:8px"><span class="badge badge-gold">Workflow Guide</span></div>
+          <div class="product-name">AI Workflow Blueprint</div>
+          <div class="product-desc">A comprehensive PDF playbook to design, document, and automate your 3 most critical business workflows. Includes a workbook, digital template, and implementation guide.</div>
+          <div class="product-price">$57</div>
+          <button class="btn-product">Download Blueprint</button>
+        </div>
+        <div class="product-card">
+          <div class="product-icon">📅</div>
+          <div style="margin-bottom:8px"><span class="badge badge-teal">Template</span></div>
+          <div class="product-name">CEO Weekly Planning Template</div>
+          <div class="product-desc">Stop reacting and start leading. This digital planning template helps you plan your week strategically — with a built-in CEO review, priority matrix, and daily intention blocks. Video walkthrough included.</div>
+          <div class="product-price">$37</div>
+          <button class="btn-product">Get the Template</button>
+        </div>
+        <div class="product-card">
+          <div class="product-icon">🎯</div>
+          <div style="margin-bottom:8px"><span class="badge badge-dark">Bundle</span></div>
+          <div class="product-name">AI Operations Bundle</div>
+          <div class="product-desc">The complete package: Business OS template + Prompt Vault + Workflow Blueprint + CEO Planner. Everything you need to transform your business operations in one purchase at a discounted bundle rate.</div>
+          <div class="product-price">$147</div>
+          <button class="btn-product">Get the Full Bundle</button>
+        </div>
+      </div>
+
+      <div class="notice-light">
+        <p>All digital products include <strong>lifetime access and free updates.</strong> Templates are compatible with your existing tools and platforms. Prompt libraries work with ChatGPT, Claude, Gemini, and all major AI tools.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: HOW IT WORKS
+═══════════════════════════════════════════ -->
+<div id="page-process" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">The Process</div>
+        <h2>Simple, Clear,<br><em>Always Custom.</em></h2>
+        <p>Every engagement follows the same principle: understand first, build second, support always. Here's exactly what working together looks like.</p>
+      </div>
+
+      <div class="card col-span-2" style="margin-bottom:28px;padding:0">
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-num">01</div>
+            <div class="step-title">Discover</div>
+            <div class="step-desc">We start with a discovery call to understand your business, your current tools, where your time goes, and what you're trying to accomplish. No assumptions, no templates.</div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">02</div>
+            <div class="step-title">Map</div>
+            <div class="step-desc">I audit your existing workflows and map every opportunity to introduce AI, automation, or a smarter system. You receive a prioritized plan before we build anything.</div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">03</div>
+            <div class="step-title">Build</div>
+            <div class="step-desc">Depending on your offer, I design and build your systems — workflows, templates, automations, custom dashboards, prompt library — everything customized to your business.</div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">04</div>
+            <div class="step-title">Transfer</div>
+            <div class="step-desc">I walk you through everything with documentation and training so you own your systems completely. You'll never need to call me just to use what we built together.</div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">05</div>
+            <div class="step-title">Optimize</div>
+            <div class="step-desc">Systems improve with use. Whether through a retainer, membership, or a follow-up intensive — there's always a path to keep your operations evolving.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-mx" style="margin-bottom:32px">
+        <div class="card accent-gold">
+          <div class="card-label gold">What to Expect</div>
+          <h3>Before Our First <em>Call</em></h3>
+          <p style="margin-bottom:12px">You'll receive a short intake form asking about your business, tools, and goals. This lets us skip the basics and start solving real problems from minute one.</p>
+          <p>Expect the first call to feel focused, efficient, and clarifying — not a general conversation, a strategic session with a clear outcome.</p>
+        </div>
+        <div class="card accent-teal">
+          <div class="card-label teal">After We Work Together</div>
+          <h3>What You'll <em>Walk Away With</em></h3>
+          <p style="margin-bottom:12px">Every engagement ends with deliverables — not just advice. You'll leave with a working system, a documented process, a clear roadmap, or all three.</p>
+          <p>Clients consistently report that the clarity alone — finally knowing exactly how their business should run — is worth the investment.</p>
+        </div>
+      </div>
+
+      <div class="booking-wrap">
+        <div class="bk-eyebrow">Next Step</div>
+        <h3>Ready to See What's<br><em>Possible for Your Business?</em></h3>
+        <p>Start with a $197 AI Clarity Call — the lowest-risk way to experience working together and walk away with a clear action plan either way.</p>
+        <div class="booking-options">
+          <button class="btn-primary" style="padding:14px 32px" onclick="showTab('offers')">Book an AI Clarity Call — $197</button>
+          <button class="btn-ghost" style="padding:14px 32px" onclick="showTab('products')">Browse Digital Products First</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE: FAQ
+═══════════════════════════════════════════ -->
+<div id="page-faq" class="page">
+  <div class="section">
+    <div class="section-inner">
+      <div class="pg-head">
+        <div class="pg-num">Common Questions</div>
+        <h2>Everything You Need to Know<br>Before You <em>Decide.</em></h2>
+      </div>
+
+      <div style="max-width:780px">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Do I need to be technical or already use AI tools? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>Not at all. In fact, most of my clients come in with little to no AI experience. My entire approach is built around making AI accessible for business owners who think in terms of goals and outcomes — not tools and technology. I handle the technical complexity so you don't have to.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How quickly will I see results? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>Many clients see their first meaningful wins within 48 hours — a prompt that saves 2 hours, an automated workflow that used to take half a day, or a template that eliminates repetitive writing. Deeper transformation through system builds typically takes 1–3 weeks to fully implement and stabilize.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What tools do I need to already have? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>It depends on what we build together. For most core services, you'll need access to one AI tool (ChatGPT, Claude, or Gemini — free versions work for most things) and a project management or operations tool that fits your workflow. I'll recommend specific tools based on your budget and goals after our discovery call — nothing unnecessary.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What makes this different from just taking an AI course? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>Courses teach you what's possible. I build what's necessary — for your specific business. The difference is the gap between watching someone use a tool and having a working system in your business by end of day. I also don't stop at education — everything I build is practical, documented, and immediately usable.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How do I know which offer is right for me? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>If you're completely new to AI and want to start small — begin with a digital product or the AI Clarity Call. If you have specific systems you need built — the Workflow Intensive or Business OS Build is your move. If you want ongoing support and continuous improvement — the membership or retainer is designed for that. Still unsure? Book a Clarity Call and we'll figure it out together.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Can you work with my existing team? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>Absolutely. The Team AI Training Program is built specifically for this — bringing your full team up to speed on AI tools, workflows, and best practices. For 1:1 services, I can also build systems that are designed to be handed off to or used by team members from day one.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What if I'm not satisfied with the work? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>I stand behind everything I build. For project-based services, if the deliverable doesn't meet the agreed scope, I'll revise it — no extra charge. For the AI Clarity Call specifically: if you don't walk away with at least 3 clear, actionable next steps, we keep talking until you do.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How do I get started? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><p>The fastest path is booking an AI Clarity Call — a 60-minute strategy session that gives you a clear picture of your options and a personalized next step whether or not you continue working with me afterward. You can also start with a digital product if you want to explore at your own pace first.</p></div>
+        </div>
+      </div>
+
+      <div style="margin-top:48px">
+        <div class="booking-wrap">
+          <div class="bk-eyebrow">Still Have Questions?</div>
+          <h3>Let's Talk It Through<br><em>on a Call.</em></h3>
+          <p>The AI Clarity Call is the best way to get specific answers for your specific situation — and walk away with a personalized action plan.</p>
+          <div class="booking-options">
+            <button class="btn-primary" style="padding:14px 32px" onclick="showTab('offers')">Book Your AI Clarity Call — $197</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="eyebrow">AI Workflow &amp; Operations Consulting</div>
+      <p>AI Operations Studio — <em>Work Smarter.</em></p>
+    </div>
+    <div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showTab('home')">Overview</button>
+        <button class="footer-link" onclick="showTab('services')">Services</button>
+        <button class="footer-link" onclick="showTab('offers')">Pricing</button>
+        <button class="footer-link" onclick="showTab('products')">Products</button>
+        <button class="footer-link" onclick="showTab('faq')">FAQ</button>
+      </div>
+      <div class="footer-copy">© 2025 AI Operations Studio · All Rights Reserved</div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end main-wrap -->
+</div><!-- end layout -->
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ── TABS ── */
+function showTab(tab) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const btn = document.querySelector(`.nav-btn[data-tab="${tab}"]`);
+  if (btn) btn.classList.add('active');
+  const pg = document.getElementById('page-' + tab);
+  if (pg) pg.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', function () { showTab(this.dataset.tab); });
+});
+
+/* ── OFFER TABS ── */
+function switchOffer(el, panel) {
+  document.querySelectorAll('.otab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.offer-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('offer-' + panel).classList.add('active');
+}
+
+/* ── FAQ ── */
+function toggleFaq(btn) {
+  const icon = btn.querySelector('.faq-icon');
+  const ans = btn.nextElementSibling;
+  const isOpen = ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('open'));
+  if (!isOpen) { ans.classList.add('open'); icon.classList.add('open'); }
+}
+
+/* ── SCROLL TOP ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 400);
+});
+</script>
+</body>
+</html>
